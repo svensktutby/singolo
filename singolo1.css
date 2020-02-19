@@ -4,6 +4,7 @@
   font-family: "Lato";
   font-style: normal;
 
+  font-display: swap;
   src: local("Lato Light"), local("Lato-Light"),
   url("./assets/fonts/lato-light.woff2") format("woff2"),
   url("./assets/fonts/lato-light.woff") format("woff");
@@ -14,6 +15,7 @@
   font-family: "Lato";
   font-style: normal;
 
+  font-display: swap;
   src: local("Lato Regular"), local("Lato-Regular"),
   url("./assets/fonts/lato-regular.woff2") format("woff2"),
   url("./assets/fonts/lato-regular.woff") format("woff");
@@ -24,6 +26,7 @@
   font-family: "Lato";
   font-style: normal;
 
+  font-display: swap;
   src: local("Lato Bold"), local("Lato-Bold"),
   url("./assets/fonts/lato-bold.woff2") format("woff2"),
   url("./assets/fonts/lato-bold.woff") format("woff");
@@ -34,6 +37,7 @@
   font-family: "Lato";
   font-style: normal;
 
+  font-display: swap;
   src: local("Lato Black"), local("Lato-Black"),
   url("./assets/fonts/lato-black.woff2") format("woff2"),
   url("./assets/fonts/lato-black.woff") format("woff");
@@ -106,6 +110,7 @@ a:focus {
 a::after {
   content: "";
   position: absolute;
+  z-index: 1;
   top: 100%;
   left: 0;
 
@@ -224,6 +229,7 @@ pre {
 .main-nav__item::after {
   content: "";
   position: absolute;
+  z-index: 1;
   top: 8px;
   right: -3px;
 
@@ -318,6 +324,7 @@ pre {
 .phone__sensor::after {
   content: "";
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
 
@@ -370,6 +377,7 @@ pre {
 .phone__button::after {
   content: "";
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
 
@@ -384,6 +392,7 @@ pre {
 
 .slider__control {
   position: absolute;
+  z-index: 1;
   top: 50%;
 
   width: 21px;
@@ -467,6 +476,7 @@ pre {
 
 .services__icon-wrapper {
   position: absolute;
+  z-index: 1;
   top: 5px;
   left: 0;
 
@@ -479,6 +489,7 @@ pre {
 
 .services__icon {
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
 
@@ -486,17 +497,32 @@ pre {
   transform: translate(-50%, -50%);
 }
 
+.services__icon--pen {
+  left: 52%;
+}
+
 .services__icon--bulb {
+  top: 49%;
   left: 59%;
 }
 
-.services__icon--heart,
-.services__icon--bubble {
-  top: 53%;
+.services__icon--heart {
+  top: 54%;
+  left: 49%;
 }
 
 .services__icon--phone {
   left: 61%;
+}
+
+.services__icon--bubble {
+  top: 54%;
+  left: 50%;
+}
+
+.services__icon--star {
+  top: 51%;
+  left: 49%;
 }
 
 .services__item-title {
