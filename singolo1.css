@@ -137,27 +137,27 @@ pre {
   margin-bottom: 15px;
 }
 
-.title--secondary {
+.title-secondary {
   font-weight: 400;
   font-size: 30px;
   color: #666d89;
   letter-spacing: 0.3px;
 }
 
-.text--secondary {
+.text-secondary {
   font-weight: 300;
   font-size: 18px;
   line-height: 1.7;
   text-align: justify;
 }
 
-.title--tertiary {
+.title-tertiary {
   font-weight: 900;
   font-size: 18px;
   color: #666d89;
 }
 
-.text--tertiary {
+.text-tertiary {
   font-weight: 400;
   font-size: 12px;
   line-height: 1.7;
