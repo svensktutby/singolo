@@ -48,6 +48,7 @@
   box-sizing: border-box;
   min-width: 320px;
   min-height: 100%;
+
   font-size: 10px;
 }
 
@@ -102,6 +103,12 @@ ul,
 pre {
   margin-top: 0;
   margin-bottom: 15px;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
 }
 
 .link {
@@ -161,7 +168,7 @@ pre {
 .text-tertiary {
   font-weight: 400;
   font-size: 1.2rem;
-  line-height: 1.7;
+  line-height: 1.8;
   text-align: justify;
 }
 
@@ -436,13 +443,13 @@ pre {
 }
 
 .slider__control--prev {
-  left: 0;
+  left: 3px;
 
   transform: rotate(-225deg);
 }
 
 .slider__control--next {
-  right: 0;
+  right: 3px;
 
   transform: rotate(-45deg);
 }
@@ -474,7 +481,7 @@ pre {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 0;
+  margin: 0 -10px;
   padding-left: 0;
 }
 
@@ -483,8 +490,10 @@ pre {
 
   display: flex;
   justify-content: space-between;
-  width: 31.8%;
-  margin-bottom: 15px;
+  width: calc(33.33% - 20px);
+  margin-right: 10px;
+  margin-bottom: 12px;
+  margin-left: 10px;
   padding-left: 80px;
 
   list-style-type: none;
@@ -519,12 +528,11 @@ pre {
 
 .services__icon--bulb {
   top: 49%;
-  left: 59%;
+  left: 60%;
 }
 
 .services__icon--heart {
   top: 54%;
-  left: 49%;
 }
 
 .services__icon--phone {
@@ -532,16 +540,14 @@ pre {
 }
 
 .services__icon--bubble {
-  top: 54%;
-  left: 50%;
+  top: 57%;
 }
 
 .services__icon--star {
-  top: 51%;
-  left: 49%;
+  top: 52%;
 }
 
 .services__item-title {
   margin-top: 0;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
