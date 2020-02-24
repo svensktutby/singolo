@@ -286,6 +286,107 @@ textarea {
 
 .portfolio__image {
   display: block;
-  width: 220px;
-  height: 187px;
+}
+
+/* about-us */
+.about-us {
+  padding-top: 56px;
+  padding-bottom: 37px;
+
+  border-bottom: 6px solid #fff;
+}
+
+.about-us__title {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.about-us__text {
+  margin-bottom: 44px;
+}
+
+.staff {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 -10px;
+}
+
+.employee {
+  width: calc(33.33% - 20px);
+  margin: 0 10px 30px 10px;
+}
+
+.employee__photo {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.employee__name {
+  margin-top: 0;
+  margin-bottom: 6px;
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.employee__description {
+  margin-bottom: 24px;
+}
+
+.employee__description p {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding-left: 0;
+}
+
+.social__item {
+  margin-right: 8px;
+
+  list-style-type: none;
+}
+
+.social__item:last-child {
+  margin-right: 0;
+}
+
+.social__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  background-color: transparent;
+  border: 1px solid #666d89;
+  border-radius: 50%;
+
+  transition: background-color 0.3s;
+}
+
+.social__link:hover,
+.social__link:focus {
+  background-color: #666d89;
+  outline: none;
+}
+
+.social__icon {
+  width: 14px;
+  height: 14px;
+
+  fill: #666d89;
+
+  transition: fill 0.3s;
+}
+
+.social__link:hover .social__icon,
+.social__link:focus .social__icon {
+  fill: #f2f2f2;
 }
