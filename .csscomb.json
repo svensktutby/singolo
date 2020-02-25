@@ -33,13 +33,13 @@
       "$variable"
     ],
     [
+      "$extend"
+    ],
+    [
       "$include"
     ],
     [
       "$include-content"
-    ],
-    [
-      "$extend"
     ],
     [
       "content",
