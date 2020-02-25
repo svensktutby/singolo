@@ -205,8 +205,8 @@ textarea {
 
 .quote__title,
 .quote__text,
-.quote__input,
-.quote__message,
+.form__input,
+.form__message,
 .info__title,
 .info__text,
 .contacts__link {
@@ -304,15 +304,15 @@ textarea {
 }
 
 .contacts__item {
+  position: relative;
+
+  padding-left: 23px;
+
   list-style-type: none;
   line-height: 1.1;
 }
 
 .contacts__link {
-  position: relative;
-
-  padding-left: 23px;
-
   text-decoration: none;
 }
 
@@ -322,8 +322,10 @@ textarea {
 
 .contacts__icon {
   position: absolute;
-  top: 0;
+  top: 4px;
   left: 0;
+
+  fill: #f0d8d9;
 }
 
 /* footer */
