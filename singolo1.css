@@ -188,15 +188,48 @@ textarea {
 }
 
 .container {
+  width: 100%;
   max-width: 960px;
-  margin: 0 auto;
+  margin-right: auto;
+  margin-left: auto;
   padding-right: 10px;
   padding-left: 10px;
 }
 
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.col {
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.col--3 {
+  -ms-flex: 0 0 25%;
+      flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.col--4 {
+  -ms-flex: 0 0 33.33333%;
+      flex: 0 0 33.33333%;
+  max-width: 33.33333%;
+}
+
+.col--8 {
+  -ms-flex: 0 0 66.66666%;
+      flex: 0 0 66.66666%;
+  max-width: 66.66666%;
+}
+
 /* header */
 .page-header {
-  padding-top: 26px;
+  padding-top: 27px;
   padding-bottom: 27px;
 
   background-color: #2d303a;
@@ -477,23 +510,15 @@ textarea {
 }
 
 .services__list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 0 -10px;
+  margin-bottom: 0;
   padding-left: 0;
 }
 
 .services__item {
   position: relative;
 
-  display: flex;
-  justify-content: space-between;
-  width: calc(33.33% - 20px);
-  margin-right: 10px;
   margin-bottom: 12px;
-  margin-left: 10px;
-  padding-left: 80px;
+  padding-left: 90px;
 
   list-style-type: none;
 }
@@ -502,7 +527,7 @@ textarea {
   position: absolute;
   z-index: 1;
   top: 5px;
-  left: 0;
+  left: 10px;
 
   width: 59px;
   height: 59px;
@@ -534,7 +559,7 @@ textarea {
   top: 54%;
 }
 
-.services__icon--phone {
+.services__icon--smartphone {
   left: 61%;
 }
 

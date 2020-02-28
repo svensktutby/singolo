@@ -25,7 +25,7 @@
           d="M29.192,16.192 C29.071,16.311 18.139,27.122 18.139,27.122 C16.957,28.291 15.044,28.291 13.861,27.122 C13.861,27.122 3.878,17.249 2.808,16.192 C-0.933,12.491 -0.933,6.492 2.808,2.792 C6.439,-0.799 12.240,-0.874 16.000,2.505 C19.761,-0.874 25.562,-0.799 29.192,2.792 C32.933,6.492 32.933,12.491 29.192,16.192 ZM27.765,4.202 C24.923,1.390 20.349,1.291 17.356,3.980 L16.000,5.199 L14.644,3.980 C11.651,1.291 7.079,1.390 4.235,4.202 C1.285,7.119 1.285,11.864 4.235,14.781 L15.288,25.711 C15.679,26.100 16.320,26.100 16.713,25.711 L27.765,14.781 C30.716,11.864 30.716,7.119 27.765,4.202 ZM9.252,6.025 L9.251,6.025 C7.457,6.025 6.002,7.479 6.002,9.270 L6.002,9.271 C6.002,9.547 5.778,9.771 5.502,9.771 C5.225,9.771 5.002,9.547 5.002,9.271 C5.002,6.928 6.903,5.029 9.248,5.027 C9.250,5.027 9.250,5.026 9.252,5.026 C9.528,5.026 9.752,5.250 9.752,5.526 C9.752,5.802 9.528,6.025 9.252,6.025 Z">
         </path>
       </symbol>
-      <symbol id="icon-phone" viewBox="0 0 32 32">
+      <symbol id="icon-smartphone" viewBox="0 0 32 32">
         <path
           d="M19.000,31.999 L3.000,32.001 C1.343,32.001 -0.000,30.658 -0.000,29.001 L-0.000,3.001 C-0.000,1.343 1.343,0.000 3.000,0.000 L19.000,-0.000 C20.657,-0.000 22.000,1.342 22.000,3.000 L22.000,29.000 C22.000,30.657 20.657,31.999 19.000,31.999 ZM20.000,3.000 C20.000,2.448 19.552,2.000 19.000,2.000 L3.000,2.001 C2.448,2.001 2.000,2.449 2.000,3.001 L2.000,5.001 L20.000,5.000 L20.000,3.000 ZM20.000,6.000 L2.000,6.000 L2.000,25.997 L20.000,25.996 L20.000,6.000 ZM20.000,26.996 L2.000,26.997 L2.000,29.001 C2.000,29.552 2.448,30.001 3.000,30.001 L19.000,29.999 C19.552,29.999 20.000,29.551 20.000,29.000 L20.000,26.996 ZM11.500,28.996 L10.500,28.996 C10.224,28.996 10.000,28.772 10.000,28.496 C10.000,28.219 10.224,27.996 10.500,27.996 L11.500,27.996 C11.776,27.996 12.000,28.219 12.000,28.496 C12.000,28.772 11.776,28.996 11.500,28.996 ZM9.500,3.000 L12.500,3.000 C12.776,3.000 13.000,3.223 13.000,3.500 C13.000,3.776 12.776,4.000 12.500,4.000 L9.500,4.000 C9.224,4.000 9.000,3.776 9.000,3.500 C9.000,3.223 9.224,3.000 9.500,3.000 Z">
         </path>
@@ -76,6 +76,7 @@
       <main class="page-main">
         <section class="presentation">
           <div class="container">
+            <h2 class="presentation__title visually-hidden">Our products</h2>
   
             <div class="slider">
               <ul class="slider__list">
@@ -119,10 +120,10 @@
               <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum. Duis mollis, non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
             </div>
 
-            <ul class="services__list">
-              <li class="services__item">
+            <ul class="services__list row">
+              <li class="services__item col col--4">
                 <div class="services__icon-wrapper">
-                  <svg class="services__icon services__icon--pen" width="30" height="30" aria-hidden="true" role="presentation">
+                  <svg class="services__icon services__icon--pen" width="30" height="30" aria-hidden="true">
                     <use xlink:href="#icon-pen"></use>
                   </svg>
                 </div>
@@ -134,9 +135,9 @@
                 </div>
               </li>
 
-              <li class="services__item">
+              <li class="services__item col col--4">
                 <div class="services__icon-wrapper">
-                  <svg class="services__icon services__icon--bulb" width="30" height="30" aria-hidden="true" role="presentation">
+                  <svg class="services__icon services__icon--bulb" width="30" height="30" aria-hidden="true">
                     <use xlink:href="#icon-bulb"></use>
                   </svg>
                 </div>
@@ -148,9 +149,9 @@
                 </div>
               </li>
 
-              <li class="services__item">
+              <li class="services__item col col--4">
                 <div class="services__icon-wrapper">
-                  <svg class="services__icon services__icon--heart" width="30" height="30" aria-hidden="true" role="presentation">
+                  <svg class="services__icon services__icon--heart" width="30" height="30" aria-hidden="true">
                     <use xlink:href="#icon-heart"></use>
                   </svg>
                 </div>
@@ -162,10 +163,10 @@
                 </div>
               </li>
 
-              <li class="services__item">
+              <li class="services__item col col--4">
                 <div class="services__icon-wrapper">
-                  <svg class="services__icon services__icon--phone" width="30" height="30" aria-hidden="true" role="presentation">
-                    <use xlink:href="#icon-phone"></use>
+                  <svg class="services__icon services__icon--smartphone" width="30" height="30" aria-hidden="true">
+                    <use xlink:href="#icon-smartphone"></use>
                   </svg>
                 </div>
                 <div class="services__content">
@@ -176,9 +177,9 @@
                 </div>
               </li>
 
-              <li class="services__item">
+              <li class="services__item col col--4">
                 <div class="services__icon-wrapper">
-                  <svg class="services__icon services__icon--bubble" width="30" height="30" aria-hidden="true" role="presentation">
+                  <svg class="services__icon services__icon--bubble" width="30" height="30" aria-hidden="true">
                     <use xlink:href="#icon-bubble"></use>
                   </svg>
                 </div>
@@ -190,9 +191,9 @@
                 </div>
               </li>
 
-              <li class="services__item">
+              <li class="services__item col col--4">
                 <div class="services__icon-wrapper">
-                  <svg class="services__icon services__icon--star" width="30" height="30" aria-hidden="true" role="presentation">
+                  <svg class="services__icon services__icon--star" width="30" height="30" aria-hidden="true">
                     <use xlink:href="#icon-star"></use>
                   </svg>
                 </div>
