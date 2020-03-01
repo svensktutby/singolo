@@ -118,22 +118,22 @@ textarea {
   content: "";
   position: absolute;
   z-index: 1;
-  top: 100%;
+  bottom: 0;
   left: 0;
 
   width: 100%;
   height: 1px;
 
   background-color: #767e9e;
-  transform: translateY(5px);
   opacity: 0;
 
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.3s, bottom 0.3s;
 }
 
 .link:hover::after,
 .link:focus::after {
-  transform: translateY(0);
+  bottom: -2px;
+
   opacity: 1;
 }
 
