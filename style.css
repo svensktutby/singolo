@@ -426,9 +426,10 @@ textarea {
 
 .phone__screen-img {
   position: absolute;
+  z-index: 1;
 
   display: block;
-  max-width: initial;
+  max-width: none;
 }
 
 .phone--vertical .phone__screen-img {
@@ -472,7 +473,7 @@ textarea {
 .slider__control {
   position: absolute;
   z-index: 1;
-  top: 50%;
+  top: 50.5%;
 
   width: 21px;
   height: 21px;
@@ -489,13 +490,13 @@ textarea {
 }
 
 .slider__control--prev {
-  left: 3px;
+  left: 4px;
 
   transform: rotate(-225deg);
 }
 
 .slider__control--next {
-  right: 3px;
+  right: 2px;
 
   transform: rotate(-45deg);
 }
@@ -509,18 +510,18 @@ textarea {
 /* services */
 .services {
   padding-top: 56px;
-  padding-bottom: 35px;
+  padding-bottom: 33px;
 
   border-bottom: 6px solid #fff;
 }
 
 .services__title {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
 }
 
 .services__text {
-  margin-bottom: 41px;
+  margin-bottom: 42px;
 }
 
 .services__list {
@@ -531,7 +532,7 @@ textarea {
 .services__item {
   position: relative;
 
-  margin-bottom: 12px;
+  margin-bottom: 28px;
   padding-left: 90px;
 
   list-style-type: none;
@@ -541,7 +542,7 @@ textarea {
   position: absolute;
   z-index: 1;
   top: 5px;
-  left: 10px;
+  left: 11px;
 
   width: 59px;
   height: 59px;
@@ -578,11 +579,7 @@ textarea {
 }
 
 .services__icon--bubble {
-  top: 57%;
-}
-
-.services__icon--star {
-  top: 52%;
+  top: 54%;
 }
 
 .services__item-title {
@@ -590,10 +587,15 @@ textarea {
   margin-bottom: 7px;
 }
 
+.services__item-text {
+  max-height: 63px;
+  overflow: hidden;
+}
+
 /* portfolio */
 .portfolio {
-  padding-top: 57px;
-  padding-bottom: 48px;
+  padding-top: 56px;
+  padding-bottom: 47px;
 
   background-color: #2d303a;
   border-bottom: 6px solid #323746;
@@ -601,11 +603,11 @@ textarea {
 
 .portfolio__title {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
 }
 
 .portfolio__text {
-  margin-bottom: 10px;
+  margin-bottom: 11px;
 }
 
 .portfolio__text p {
@@ -613,7 +615,7 @@ textarea {
 }
 
 .portfolio__filter {
-  margin-bottom: 18px;
+  margin-bottom: 19px;
 }
 
 .filter {
@@ -853,8 +855,9 @@ textarea {
   min-width: 80px;
   margin: 0 auto;
 
-  cursor: pointer;
   text-align: center;
+
+  cursor: pointer;
 }
 
 .form__input:hover,
