@@ -98,7 +98,7 @@
             
             <h1 class="logo page-header__logo">Singolo<span class="logo__star">*</span></h1>
   
-            <nav class="main-nav page-header__nav">
+            <nav class="main-nav page-header__nav" id="main-nav">
               <ul class="main-nav__list">
                 <li class="main-nav__item main-nav__item--active">
                   <a class="main-nav__link link" href="#home">Home</a>
@@ -126,14 +126,15 @@
           <div class="container">
             <h2 class="promo__title visually-hidden">Our products</h2>
   
-            <div class="slider">
+            <div class="slider" id="slider">
               <ul class="slider__list">
                 <li class="slider__item">
                   <div class="phone phone--vertical">
                     <div class="phone__sensor"></div>
                     <div class="phone__speaker"></div>
                     <div class="phone__screen">
-                      <img class="phone__screen-img" src="./assets/img/slider/screen01.jpg" width="580" height="580" alt="Phone screen">
+                      <img class="phone__screen-img" src="./assets/img/slider/phone-display-yellow.jpg" width="188" height="333"
+                           alt="Phone screen">
                     </div>
                     <div class="phone__button"></div>
                   </div>
@@ -142,20 +143,21 @@
                     <div class="phone__sensor"></div>
                     <div class="phone__speaker"></div>
                     <div class="phone__screen">
-                      <img class="phone__screen-img" src="./assets/img/slider/screen02.jpg" width="580" height="580" alt="Phone screen">
+                      <img class="phone__screen-img" src="./assets/img/slider/phone-display-blue.jpg" width="188" height="333"
+                           alt="Phone screen">
                     </div>
                     <div class="phone__button"></div>
                   </div>
                 </li>
               </ul>
               <div class="slider__controls">
-                <button class="slider__control slider__control--prev" type="button">
+                <button class="slider__control slider__control--prev" type="button" id="slider-control-prev">
                   <svg class="slider__control-icon" width="16" height="27" aria-hidden="true">
                     <use xlink:href="#arrow-left"></use>
                   </svg>
                   <span class="slider__control-text visually-hidden">Previous</span>
                 </button>
-                <button class="slider__control slider__control--next" type="button">
+                <button class="slider__control slider__control--next" type="button" id="slider-control-next">
                   <svg class="slider__control-icon" width="16" height="27" aria-hidden="true">
                     <use xlink:href="#arrow-right"></use>
                   </svg>
@@ -271,7 +273,7 @@
             </div>
 
             <div class="portfolio__filter filter">
-              <a class="filter__item filter__item--selected">All</a>
+              <a class="filter__item filter__item--selected" id="all" href="#">All</a>
               <a class="filter__item" href="#">Web Design</a>
               <a class="filter__item" href="#">Graphic Design</a>
               <a class="filter__item" href="#">Artwork</a>
