@@ -153,10 +153,11 @@
 // switch to anchors and change active nav color
 (function () {
   const UTILS = window.utils;
+  const HEADER_HEIGHT = 95;
   const mainNav = document.querySelector('#main-nav');
   const mainNavItems = mainNav.querySelectorAll('.main-nav__item');
 
-  mainNav.addEventListener('click', function (evt) {
+  const anchorStepHandler = function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
 
     const target = evt ? evt.target : window.event.srcElement;
@@ -164,9 +165,8 @@
     if (target.classList.contains('main-nav__link') &&
       !target.parentElement.classList.contains('main-nav__item--active')) {
 
-      const headerHeight = 95;
       const elementID = target.getAttribute('href').substr(1);
-      const topOfElement = document.getElementById(elementID).offsetTop - headerHeight;
+      const topOfElement = document.getElementById(elementID).offsetTop - HEADER_HEIGHT;
       window.scroll({
         top: topOfElement,
         behavior: "smooth"
@@ -175,61 +175,70 @@
       UTILS.toggleClass(mainNavItems, 'main-nav__item--active', false);
       target.parentElement.classList.add('main-nav__item--active');
     }
-  })
+  };
+
+  mainNav.addEventListener('click', anchorStepHandler)
 })();
 
 // portfolio
 (function () {
   const UTILS = window.utils;
   const DEBOUNCE_DELAY = 500;
-  const portfolio = document.querySelector('#portfolio');
-  const portfolioGroup = portfolio.querySelector('.portfolio__group');
-  const portfolioItems = portfolio.querySelectorAll('.portfolio__item');
-  const portfolioImages = portfolio.querySelectorAll('.portfolio__image');
+  const portfolioFilter = document.querySelector('#portfolio-filter');
+  const portfolioGroup = document.querySelector('#portfolio-group');
+  const portfolioItems = portfolioGroup.querySelectorAll('.portfolio__item');
+  const portfolioImages = portfolioGroup.querySelectorAll('.portfolio__image');
 
-  portfolio.addEventListener('click', function (evt) {
+  const portfolioFilterHandler = function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
 
-    // UTILS.debounce(function () {
-      const target = evt ? evt.target : window.event.srcElement;
+    const target = evt ? evt.target : window.event.srcElement;
 
-      if (target.classList.contains('filter__item')) {
-        target.classList.toggle('filter__item--selected');
-        target.blur();
-        UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
+    if (target.classList.contains('filter__item')) {
+      target.classList.toggle('filter__item--selected');
+      target.blur();
+      UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
 
-        const fragment = document.createDocumentFragment();
+      const fragment = document.createDocumentFragment();
 
-        portfolioGroup.innerHTML = '';
+      portfolioGroup.innerHTML = '';
 
-        if (!portfolio.querySelector('.filter__item--selected')) {
-          return false;
-        } else if (portfolio.querySelector('#all').classList.contains('filter__item--selected')) {
-          const shuffledPortfolioItems = UTILS.shuffleArray(Array.from(portfolioItems), false);
-          shuffledPortfolioItems.forEach(function (nodeItem) {
-            fragment.appendChild(nodeItem);
-          });
-        } else {
-          const shuffledPortfolioItems = UTILS.shuffleArray(Array.from(portfolioItems), true);
-          shuffledPortfolioItems.forEach(function (nodeItem) {
-            fragment.appendChild(nodeItem);
-          });
-        }
-
-        portfolioGroup.appendChild(fragment);
+      if (!portfolioFilter.querySelector('.filter__item--selected')) {
+        return false;
+      } else if (portfolioFilter.querySelector('#all').classList.contains('filter__item--selected')) {
+        const shuffledPortfolioItems = UTILS.shuffleArray(Array.from(portfolioItems), false);
+        shuffledPortfolioItems.forEach(function (nodeItem) {
+          fragment.appendChild(nodeItem);
+        });
+      } else {
+        const shuffledPortfolioItems = UTILS.shuffleArray(Array.from(portfolioItems), true);
+        shuffledPortfolioItems.forEach(function (nodeItem) {
+          fragment.appendChild(nodeItem);
+        });
       }
 
-      if (target.classList.contains('portfolio__image')) {
-        UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
-        target.classList.add('portfolio__image--selected');
-        target.parentElement.blur();
-      }
+      portfolioGroup.appendChild(fragment);
+    }
+  };
 
-      if (target.classList.contains('portfolio__item')) {
-        UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
-        target.querySelector('.portfolio__image').classList.add('portfolio__image--selected');
-        target.blur();
-      }
-    // }, DEBOUNCE_DELAY)();
-  })
+  const portfolioGroupHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    const target = evt ? evt.target : window.event.srcElement;
+
+    if (target.classList.contains('portfolio__image')) {
+      UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
+      target.classList.add('portfolio__image--selected');
+      target.parentElement.blur();
+    }
+
+    if (target.classList.contains('portfolio__item')) {
+      UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
+      target.querySelector('.portfolio__image').classList.add('portfolio__image--selected');
+      target.blur();
+    }
+  };
+
+  portfolioFilter.addEventListener('click', portfolioFilterHandler);
+  portfolioGroup.addEventListener('click', portfolioGroupHandler);
 })();
