@@ -164,11 +164,12 @@
     if (target.classList.contains('main-nav__link') &&
       !target.parentElement.classList.contains('main-nav__item--active')) {
 
-      const blockID = target.getAttribute('href').substr(1);
-
-      document.getElementById(blockID).scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      const headerHeight = 95;
+      const elementID = target.getAttribute('href').substr(1);
+      const topOfElement = document.getElementById(elementID).offsetTop - headerHeight;
+      window.scroll({
+        top: topOfElement,
+        behavior: "smooth"
       });
 
       UTILS.toggleClass(mainNavItems, 'main-nav__item--active', false);
@@ -187,8 +188,6 @@
   const portfolioImages = portfolio.querySelectorAll('.portfolio__image');
 
   portfolio.addEventListener('click', function (evt) {
-    console.log(evt.preventDefault);
-    console.log(window.event.returnValue);
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
 
     // UTILS.debounce(function () {
