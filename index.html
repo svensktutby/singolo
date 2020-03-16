@@ -128,7 +128,7 @@
   
             <div class="slider" id="slider">
               <ul class="slider__list">
-                <li class="slider__item fade" data-theme="red">
+                <li class="slider__item fadein" data-theme="red">
                   <div class="phone phone--vertical">
                     <div class="phone__sensor"></div>
                     <div class="phone__speaker"></div>
@@ -150,7 +150,7 @@
                   </div>
                 </li>
 
-                <li class="slider__item fade" data-theme="blue">
+                <li class="slider__item fadein" data-theme="blue">
                   <div class="phone phone--vertical phone--small">
                     <div class="phone__sensor"></div>
                     <div class="phone__speaker"></div>
@@ -507,11 +507,15 @@
 
             <div class="contact__bottom row">
               <div class="contact__form-wrapper col col--8">
-                <form class="contact__form form" action="#" method="POST">
-                  <input class="form__input text-tertiary" type="text" name="name" id="name" placeholder="Name (Required)" required>
-                  <input class="form__input text-tertiary" type="email" name="email" id="email" placeholder="Email (Required)" required>
-                  <input class="form__input text-tertiary" type="text" name="subject" id="subject" placeholder="Subject">
-                  <textarea class="form__message text-tertiary" name="message" id="message" placeholder="Describe your project in detail..."></textarea>
+                <form class="contact__form form" id="contact-form" action="#" method="POST">
+                  <input class="form__input text-tertiary" type="text" name="name" id="name" maxlength="100"
+                         placeholder="Name (Required)" required>
+                  <input class="form__input text-tertiary" type="email" name="email" id="email" maxlength="100"
+                         placeholder="Email (Required)" required>
+                  <input class="form__input text-tertiary" type="text" name="subject" id="subject" maxlength="100"
+                         placeholder="Subject">
+                  <textarea class="form__message text-tertiary" name="message" id="message" maxlength="1000"
+                            placeholder="Describe your project in detail..."></textarea>
                   <button class="form__submit text-tertiary" type="submit" name="submit" id="submit">Send</button>
                 </form>
               </div>
@@ -594,6 +598,25 @@
           </ul>
         </div>
       </footer>
+    </div>
+  </div>
+
+  <div class="modal-overlay hide" id="modal-overlay">
+    <div class="modal">
+      <div class="modal__content">
+        <div class="modal__heading title-secondary">The letter was sent</div>
+        <table class="modal__result table text-secondary">
+          <tr class="table__row">
+            <td class="table__col">Subject:</td>
+            <td class="table__col" id="result-subject"></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__col">Description:</td>
+            <td class="table__col" id="result-desc"></td>
+          </tr>
+        </table>
+        <button class="modal__close" id="modal-close" type="button">OK</button>
+      </div>
     </div>
   </div>
 

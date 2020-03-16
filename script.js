@@ -50,31 +50,6 @@
   };
 
   /**
-   * Removes empty DOM elements
-   * @param {Object} list NodeList elements
-   */
-  const removeEmptyElements = function (list) {
-    for (let i = 0; i < list.length; i++) {
-      if (!list[i].textContent) {
-        list[i].parentElement.removeChild(list[i]);
-      }
-    }
-  };
-
-  /**
-   * Removes DOM elements
-   * @param {Object} parentNodeItem Parent DOM element
-   * @param {Object} nodeList
-   */
-  const removeNodeList = function (parentNodeItem, nodeList) {
-    if (parentNodeItem && nodeList.length) {
-      for (let i = 0; i < nodeList.length; i++) {
-        parentNodeItem.removeChild(nodeList[i]);
-      }
-    }
-  };
-
-  /**
    * Removes a CSS class from a DOM element
    * @param {Object} nodeItem Target DOM element
    * @param {string} cssClass CSS class of an element (without .point)
@@ -141,8 +116,6 @@
     getRandomInt: getRandomInt,
     getRandomArrayItem: getRandomArrayItem,
     shuffleArray: shuffleArray,
-    removeEmptyElements: removeEmptyElements,
-    removeNodeList: removeNodeList,
     removeCssClass: removeCssClass,
     toggleClass: toggleClass,
     keyPressHandler: keyPressHandler,
@@ -330,5 +303,77 @@
   portfolioGroup.addEventListener('click', portfolioGroupHandler);
 })();
 
+/* easy validation form and showing modal window
+ ******************************/
+(function () {
+  const UTILS = window.utils;
+  const form = document.querySelector('#contact-form');
+  const formName = form.querySelector('#name');
+  const formEmail = form.querySelector('#email');
+  const formSubject = form.querySelector('#subject');
+  const formMessage = form.querySelector('#message');
+  const formSubmit = form.querySelector('#submit');
+  const modalOverlay = document.querySelector('#modal-overlay');
+  const modal = modalOverlay.querySelector('.modal');
+  const modalSubject = modalOverlay.querySelector('#result-subject');
+  const modalDescription = modalOverlay.querySelector('#result-desc');
+  const modalClose = modalOverlay.querySelector('#modal-close');
 
+  const openModal = function () {
+    modalOverlay.classList.remove('hide');
+    modalOverlay.classList.add('fadein');
+    modal.classList.add('bounce');
+    modalSubject.textContent = formSubject.value  || 'Without subject';
+    modalDescription.textContent = formMessage.value || 'Without description';
+    formSubmit.blur();
+    form.reset();
+
+    modalOverlay.addEventListener('click', closeModalHandler);
+    window.addEventListener('keydown', closeModalHandler);
+  };
+
+  const closeModal = function () {
+    modalOverlay.classList.remove('fadein');
+    modalOverlay.classList.add('fadeout');
+    modal.classList.remove('bounce');
+    setTimeout(function () {
+      modalOverlay.classList.remove('fadeout');
+      modalOverlay.classList.add('hide');
+    }, 450);
+
+    modalOverlay.removeEventListener('click', closeModalHandler);
+    window.removeEventListener('keydown', closeModalHandler);
+  };
+
+  const submitErrorHandler = function () {
+    if (!formName.checkValidity() && !formEmail.checkValidity()) {
+      formSubmit.classList.add('shake');
+      setTimeout(function () {
+        UTILS.removeCssClass(formSubmit, 'shake');
+      }, 450);
+    }
+  };
+
+  const formSubmitHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    openModal();
+  };
+
+  const closeModalHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    const target = evt ? evt.target : window.event.srcElement;
+
+    if (target === modalOverlay ||
+      target === modalClose ||
+      evt.key === UTILS.ESCAPE.key ||
+      evt.keyCode === UTILS.ESCAPE.keyCode) {
+      closeModal();
+    }
+  };
+
+  formSubmit.addEventListener('click', submitErrorHandler);
+  form.addEventListener('submit', formSubmitHandler);
+})();
 
