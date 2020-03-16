@@ -180,10 +180,86 @@
   mainNav.addEventListener('click', anchorStepHandler)
 })();
 
+// slider
+(function () {
+  const UTILS = window.utils;
+  const slider = document.querySelector('#slider');
+  const sliderControls = document.querySelector('#slider-controls');
+  const phones = slider.querySelectorAll('.phone');
+
+  let slideIndex = 0;
+  toggleSlides(slideIndex);
+
+  function plusSlides(n) {
+    return toggleSlides(slideIndex += n);
+  }
+
+  function toggleSlides(n) {
+    const slides = slider.querySelectorAll(".slider__item");
+
+    if (n > slides.length - 1) {
+      slideIndex = 0;
+    }
+
+    if (n < 0) {
+      slideIndex = slides.length - 1;
+    }
+
+    UTILS.toggleClass(slides, 'hide', true);
+    UTILS.toggleClass(slides[slideIndex], 'hide', false);
+
+    return slides[slideIndex];
+  }
+
+  function togglePromoBgColor(nodeItem) {
+    const promo = document.querySelector('#home');
+
+    const bgColor = nodeItem.getAttribute('data-theme');
+
+    promo.className = 'promo';
+    promo.classList.add('promo--theme-' + bgColor);
+  }
+
+  const fadeSlidesHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    const target = evt ? evt.target : window.event.srcElement;
+
+    if (target.classList.contains('slider__control--prev') ||
+      target.closest('.slider__control--prev')) {
+      const currentSlide = plusSlides(-1);
+      togglePromoBgColor(currentSlide);
+    }
+
+    if (target.classList.contains('slider__control--next') ||
+      target.closest('.slider__control--next')) {
+      const currentSlide = plusSlides(1);
+      togglePromoBgColor(currentSlide);
+    }
+  };
+
+  sliderControls.addEventListener('click', fadeSlidesHandler);
+
+  const toggleImageHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    const target = evt ? evt.target : window.event.srcElement;
+    const phone = target.closest('.phone');
+
+    if (phone) {
+      phone.querySelector('img').classList.toggle('hide');
+    }
+  };
+
+  Array.from(phones, function (phone) {
+    phone.addEventListener('click', toggleImageHandler);
+  });
+
+})();
+
 // portfolio
 (function () {
   const UTILS = window.utils;
-  const DEBOUNCE_DELAY = 500;
   const portfolioFilter = document.querySelector('#portfolio-filter');
   const portfolioGroup = document.querySelector('#portfolio-group');
   const portfolioItems = portfolioGroup.querySelectorAll('.portfolio__item');
