@@ -150,7 +150,8 @@
   };
 })();
 
-// switch to anchors and change active nav color
+/* step to anchors and change the active nav color
+ ******************************/
 (function () {
   const UTILS = window.utils;
   const HEADER_HEIGHT = 95;
@@ -169,7 +170,7 @@
       const topOfElement = document.getElementById(elementID).offsetTop - HEADER_HEIGHT;
       window.scroll({
         top: topOfElement,
-        behavior: "smooth"
+        behavior: 'smooth'
       });
 
       UTILS.toggleClass(mainNavItems, 'main-nav__item--active', false);
@@ -177,12 +178,14 @@
     }
   };
 
-  mainNav.addEventListener('click', anchorStepHandler)
+  mainNav.addEventListener('click', anchorStepHandler);
 })();
 
-// slider
+/* switch slides and toggle the phone image
+ ******************************/
 (function () {
   const UTILS = window.utils;
+  const DEBOUNCE_DELAY = 300;
   const slider = document.querySelector('#slider');
   const sliderControls = document.querySelector('#slider-controls');
   const phones = slider.querySelectorAll('.phone');
@@ -195,7 +198,7 @@
   }
 
   function toggleSlides(n) {
-    const slides = slider.querySelectorAll(".slider__item");
+    const slides = slider.querySelectorAll('.slider__item');
 
     if (n > slides.length - 1) {
       slideIndex = 0;
@@ -211,7 +214,7 @@
     return slides[slideIndex];
   }
 
-  function togglePromoBgColor(nodeItem) {
+  function toggleBgColor(nodeItem) {
     const promo = document.querySelector('#home');
 
     const bgColor = nodeItem.getAttribute('data-theme');
@@ -220,7 +223,7 @@
     promo.classList.add('promo--theme-' + bgColor);
   }
 
-  const fadeSlidesHandler = function (evt) {
+  const fadeSlidesHandler = UTILS.debounce(function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
 
     const target = evt ? evt.target : window.event.srcElement;
@@ -228,17 +231,20 @@
     if (target.classList.contains('slider__control--prev') ||
       target.closest('.slider__control--prev')) {
       const currentSlide = plusSlides(-1);
-      togglePromoBgColor(currentSlide);
+      toggleBgColor(currentSlide);
     }
 
     if (target.classList.contains('slider__control--next') ||
       target.closest('.slider__control--next')) {
       const currentSlide = plusSlides(1);
-      togglePromoBgColor(currentSlide);
+      toggleBgColor(currentSlide);
     }
-  };
+  }, DEBOUNCE_DELAY);
 
-  sliderControls.addEventListener('click', fadeSlidesHandler);
+  sliderControls.addEventListener('click', function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    fadeSlidesHandler(evt);
+  });
 
   const toggleImageHandler = function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
@@ -257,15 +263,17 @@
 
 })();
 
-// portfolio
+/* toggle portfolio filter tags and select an image
+ ******************************/
 (function () {
   const UTILS = window.utils;
+  const DEBOUNCE_DELAY = 300;
   const portfolioFilter = document.querySelector('#portfolio-filter');
   const portfolioGroup = document.querySelector('#portfolio-group');
   const portfolioItems = portfolioGroup.querySelectorAll('.portfolio__item');
   const portfolioImages = portfolioGroup.querySelectorAll('.portfolio__image');
 
-  const portfolioFilterHandler = function (evt) {
+  const portfolioFilterHandler = UTILS.debounce(function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
 
     const target = evt ? evt.target : window.event.srcElement;
@@ -295,7 +303,7 @@
 
       portfolioGroup.appendChild(fragment);
     }
-  };
+  }, DEBOUNCE_DELAY);
 
   const portfolioGroupHandler = function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
@@ -315,6 +323,12 @@
     }
   };
 
-  portfolioFilter.addEventListener('click', portfolioFilterHandler);
+  portfolioFilter.addEventListener('click', function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    portfolioFilterHandler(evt);
+  });
   portfolioGroup.addEventListener('click', portfolioGroupHandler);
 })();
+
+
+

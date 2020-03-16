@@ -441,17 +441,21 @@ textarea {
   transform: rotate(90deg);
 }
 
+.phone--big {
+  transform: scale(1.067);
+}
+
 .phone--small {
   transform: scale(0.65);
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .phone--small:first-child {
-  margin-right: -38px;
+  margin-right: -31px;
 }
 
 .phone--small:last-child {
-  margin-left: -38px;
+  margin-left: -31px;
 }
 
 .phone__sensor {
