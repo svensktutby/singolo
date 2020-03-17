@@ -315,8 +315,8 @@
   const formSubmit = form.querySelector('#submit');
   const modalOverlay = document.querySelector('#modal-overlay');
   const modal = modalOverlay.querySelector('.modal');
-  const modalSubject = modalOverlay.querySelector('#result-subject');
-  const modalDescription = modalOverlay.querySelector('#result-desc');
+  const modalSubject = modalOverlay.querySelector('#info-subject');
+  const modalDescription = modalOverlay.querySelector('#info-desc');
   const modalClose = modalOverlay.querySelector('#modal-close');
 
   const openModal = function () {
@@ -346,7 +346,7 @@
   };
 
   const submitErrorHandler = function () {
-    if (!formName.checkValidity() && !formEmail.checkValidity()) {
+    if (!formName.checkValidity() || !formEmail.checkValidity()) {
       formSubmit.classList.add('shake');
       setTimeout(function () {
         UTILS.removeCssClass(formSubmit, 'shake');

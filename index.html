@@ -605,16 +605,12 @@
     <div class="modal">
       <div class="modal__content">
         <div class="modal__heading title-secondary">The letter was sent</div>
-        <table class="modal__result table text-secondary">
-          <tr class="table__row">
-            <td class="table__col">Subject:</td>
-            <td class="table__col" id="result-subject"></td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__col">Description:</td>
-            <td class="table__col" id="result-desc"></td>
-          </tr>
-        </table>
+          <dl class="modal__info text-secondary">
+            <dt class="modal__info-title">Subject:</dt>
+            <dd class="modal__info-text" id="info-subject"></dd>
+            <dt class="modal__info-title">Description:</dt>
+            <dd class="modal__info-text" id="info-desc"></dd>
+          </dl>
         <button class="modal__close" id="modal-close" type="button">OK</button>
       </div>
     </div>
