@@ -1,6 +1,7 @@
 'use strict';
 
-// utils
+/* utilities
+ ******************************/
 (function () {
   const KeyCode = {
     ENTER: {
@@ -126,10 +127,12 @@
 /* step to anchors and change the active nav color
  ******************************/
 (function () {
-  const UTILS = window.utils;
-  const HEADER_HEIGHT = 95;
+  const header = document.querySelector('.page-header');
+  const HEADER_HEIGHT = header.offsetHeight;
+  const FIX_HEIGHT_ACTIVE_COLOR = 1;
   const mainNav = document.querySelector('#main-nav');
-  const mainNavItems = mainNav.querySelectorAll('.main-nav__item');
+  const mainNavLinks = mainNav.querySelectorAll('.main-nav__link');
+  const sections = document.querySelectorAll('section');
 
   const anchorStepHandler = function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
@@ -140,18 +143,39 @@
       !target.parentElement.classList.contains('main-nav__item--active')) {
 
       const elementID = target.getAttribute('href').substr(1);
-      const topOfElement = document.getElementById(elementID).offsetTop - HEADER_HEIGHT;
+      const topOfElement = document.getElementById(elementID).offsetTop - HEADER_HEIGHT + FIX_HEIGHT_ACTIVE_COLOR;
       window.scroll({
         top: topOfElement,
         behavior: 'smooth'
       });
-
-      UTILS.toggleClass(mainNavItems, 'main-nav__item--active', false);
-      target.parentElement.classList.add('main-nav__item--active');
+      target.blur();
     }
   };
 
   mainNav.addEventListener('click', anchorStepHandler);
+
+  const scrollHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    const curPosition = window.pageYOffset + HEADER_HEIGHT;
+
+    sections.forEach(function (section) {
+      if (section.offsetTop < curPosition &&
+        (section.offsetTop + section.offsetHeight) > curPosition) {
+        mainNavLinks.forEach(function (link) {
+          link.parentElement.classList.remove('main-nav__item--active');
+
+          const elementID = link.getAttribute('href').substr(1);
+
+          if (elementID === section.id) {
+            link.parentElement.classList.add('main-nav__item--active');
+          }
+        });
+      }
+    });
+  };
+
+  document.addEventListener('scroll', scrollHandler);
 })();
 
 /* switch slides and toggle the phone image
@@ -230,7 +254,7 @@
     }
   };
 
-  Array.from(phones, function (phone) {
+  phones.forEach( function (phone) {
     phone.addEventListener('click', toggleImageHandler);
   });
 
@@ -246,6 +270,35 @@
   const portfolioItems = portfolioGroup.querySelectorAll('.portfolio__item');
   const portfolioImages = portfolioGroup.querySelectorAll('.portfolio__image');
 
+  const getShuffledPortfolioItems = function () {
+    const portfolioItemsArray = Array.from(portfolioItems);
+    let shuffledPortfolioItems = [];
+
+    if (!portfolioFilter.querySelector('.filter__item--selected')) {
+      return shuffledPortfolioItems;
+    }
+    if (portfolioFilter.querySelector('#all').classList.contains('filter__item--selected')) {
+      shuffledPortfolioItems = UTILS.shuffleArray(portfolioItemsArray, false);
+    } else {
+      shuffledPortfolioItems = UTILS.shuffleArray(portfolioItemsArray, true);
+    }
+
+    return shuffledPortfolioItems;
+  };
+
+  const insertFragment = function (where, nodeList) {
+    if (!nodeList.length) {
+      return;
+    }
+    const fragment = document.createDocumentFragment();
+
+    nodeList.forEach(function (nodeItem) {
+      fragment.appendChild(nodeItem);
+    });
+
+    where.appendChild(fragment);
+  };
+
   const portfolioFilterHandler = UTILS.debounce(function (evt) {
     evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
 
@@ -256,25 +309,9 @@
       target.blur();
       UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
 
-      const fragment = document.createDocumentFragment();
-
       portfolioGroup.innerHTML = '';
 
-      if (!portfolioFilter.querySelector('.filter__item--selected')) {
-        return false;
-      } else if (portfolioFilter.querySelector('#all').classList.contains('filter__item--selected')) {
-        const shuffledPortfolioItems = UTILS.shuffleArray(Array.from(portfolioItems), false);
-        shuffledPortfolioItems.forEach(function (nodeItem) {
-          fragment.appendChild(nodeItem);
-        });
-      } else {
-        const shuffledPortfolioItems = UTILS.shuffleArray(Array.from(portfolioItems), true);
-        shuffledPortfolioItems.forEach(function (nodeItem) {
-          fragment.appendChild(nodeItem);
-        });
-      }
-
-      portfolioGroup.appendChild(fragment);
+      insertFragment(portfolioGroup, getShuffledPortfolioItems());
     }
   }, DEBOUNCE_DELAY);
 
@@ -308,8 +345,7 @@
 (function () {
   const UTILS = window.utils;
   const form = document.querySelector('#contact-form');
-  const formName = form.querySelector('#name');
-  const formEmail = form.querySelector('#email');
+  const formInputsRequired = form.querySelectorAll('.form__input:required');
   const formSubject = form.querySelector('#subject');
   const formMessage = form.querySelector('#message');
   const formSubmit = form.querySelector('#submit');
@@ -345,12 +381,29 @@
     window.removeEventListener('keydown', closeModalHandler);
   };
 
+  const requiredInputHandler = function (evt) {
+    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+
+    const target = evt ? evt.target : window.event.srcElement;
+
+    UTILS.removeCssClass(target, 'form__input--invalid');
+  };
+
+  const setInvalidSubmitBtn = function () {
+    formSubmit.classList.add('shake');
+
+    setTimeout(function () {
+      UTILS.removeCssClass(formSubmit, 'shake');
+    }, 450);
+  };
+
   const submitErrorHandler = function () {
-    if (!formName.checkValidity() || !formEmail.checkValidity()) {
-      formSubmit.classList.add('shake');
-      setTimeout(function () {
-        UTILS.removeCssClass(formSubmit, 'shake');
-      }, 450);
+    for (let input of formInputsRequired) {
+      if (!input.checkValidity()) {
+        input.classList.add('form__input--invalid');
+        setInvalidSubmitBtn();
+        // break; // was turned off to show all invalid inputs
+      }
     }
   };
 
@@ -375,5 +428,8 @@
 
   formSubmit.addEventListener('click', submitErrorHandler);
   form.addEventListener('submit', formSubmitHandler);
+  formInputsRequired.forEach( function (input) {
+    input.addEventListener('input', requiredInputHandler);
+  });
 })();
 
