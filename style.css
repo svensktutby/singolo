@@ -84,6 +84,42 @@
   }
 }
 
+@-webkit-keyframes left {
+  from {
+    left: 0;
+  }
+  to {
+    left: -100%;
+  }
+}
+
+@keyframes left {
+  from {
+    left: 0;
+  }
+  to {
+    left: -100%;
+  }
+}
+
+@-webkit-keyframes right {
+  from {
+    left: 100%;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes right {
+  from {
+    left: 100%;
+  }
+  to {
+    left: 0;
+  }
+}
+
 @-webkit-keyframes bounce {
   0% {
     top: -2000px;
@@ -172,6 +208,28 @@
 .fadeout {
   -webkit-animation: fadeout 0.6s;
           animation: fadeout 0.6s;
+}
+
+.to-left {
+  -webkit-animation: left 0.6s;
+          animation: left 0.6s;
+}
+
+.from-right {
+  -webkit-animation: right 0.6s;
+          animation: right 0.6s;
+}
+
+.from-left {
+  -webkit-animation: left 0.6s;
+          animation: left 0.6s;
+  animation-direction: reverse;
+}
+
+.to-right {
+  -webkit-animation: right 0.6s;
+          animation: right 0.6s;
+  animation-direction: reverse;
 }
 
 .bounce {
@@ -537,8 +595,8 @@ textarea {
 
 /* promo */
 .promo {
-  padding-top: 12px;
-  padding-bottom: 42px;
+  padding-top: 43px;
+  padding-bottom: 30px;
 
   transition: background-color 1s, border-bottom 1s;
 }
@@ -558,51 +616,98 @@ textarea {
 }
 
 .slider__list {
-  margin-bottom: 0;
-  padding-left: 0;
+  position: relative;
+
+  width: 100%;
+  min-height: 520px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .slider__item {
-  width: 100%;
-  overflow: hidden;
-  min-height: 540px;
-  display: flex;
+  position: relative;
+
+  display: none;
   align-items: center;
-  padding-right: 72px;
-  padding-left: 72px;
+  padding-right: 8%;
+  padding-left: 8%;
 
   list-style-type: none;
+
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+.slider__item:nth-child(1) {
+  padding-top: 11px;
 }
 
 .slider__item:nth-child(2) {
   justify-content: center;
 }
 
+.slider__item--active,
+.slider__item--next {
+  display: flex;
+}
+
+.slider__item--next {
+  position: absolute;
+  top: 0;
+
+  width: 100%;
+}
+
 .slider__control {
   position: absolute;
-  z-index: 1;
-  top: 50%;
+  top: 0;
+  bottom: 0;
 
-  min-height: 70px;
+  width: 5%;
+  padding: 0;
 
   background-color: transparent;
   border: 0;
-  transform: translateY(-30%);
   cursor: pointer;
 }
 
 .slider__control--prev {
+  right: auto;
   left: 0;
 }
 
 .slider__control--next {
   right: 0;
+  left: auto;
 }
 
 .slider__control-icon {
+  position: absolute;
+  top: 50%;
+
   fill: #ca4549;
+  transform: translateY(-100%);
 
   transition: fill 0.3s;
+}
+
+.promo--theme-red .slider__control-icon {
+  fill: #ca4549;
+}
+
+.promo--theme-blue .slider__control-icon {
+  fill: #5873cb;
+}
+
+.slider__control--prev .slider__control-icon {
+  right: auto;
+  left: 0;
+}
+
+.slider__control--next .slider__control-icon {
+  right: 0;
+  left: auto;
 }
 
 .slider__control:focus {
@@ -626,9 +731,9 @@ textarea {
 }
 
 .phone--small {
-  opacity: 0.7;
   border-radius: 18px;
   box-shadow: 15px 15px 0 3px rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
 }
 
 .phone__img {
@@ -645,15 +750,17 @@ textarea {
 }
 
 .phone--vertical .phone__screen {
-  width: 87%;
   top: 14.3%;
   left: 6.6%;
+
+  width: 87%;
 }
 
 .phone--horizontal .phone__screen {
-  width: 72.8%;
   top: 6.6%;
   right: 14.1%;
+
+  width: 72.8%;
 }
 
 /* services */
@@ -792,17 +899,24 @@ textarea {
   display: block;
   margin-bottom: 20px;
 
-  transition: transform 0.3s;
-}
-
-.portfolio__item:hover,
-.portfolio__item:focus {
-  outline: none;
-  transform: scale(0.93);
+  transition: all 0.3s;
 }
 
 .portfolio__item:nth-child(n+13) {
   display: none;
+}
+
+.portfolio__group:hover .portfolio__item {
+  box-shadow: none;
+  transform: scale(0.98);
+  opacity: 0.5;
+  filter: blur(2px);
+}
+
+.portfolio__group:hover .portfolio__item:hover {
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0px);
 }
 
 .portfolio__image {
@@ -812,7 +926,12 @@ textarea {
   transition: box-shadow 0.3s;
 }
 
-.portfolio__image--selected {
+.portfolio__item:hover .portfolio__image {
+  box-shadow: 0 8px 20px 0 rgba(255, 255, 255, 0.125);
+}
+
+.portfolio__image--selected,
+.portfolio__item:hover .portfolio__image--selected {
   box-shadow: 0 0 0 5px #f06c64;
 }
 

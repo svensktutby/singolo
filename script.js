@@ -1,8 +1,9 @@
-'use strict';
 
 /* utilities
  ******************************/
 (function () {
+  'use strict';
+
   const KeyCode = {
     ENTER: {
       key: 'Enter',
@@ -127,6 +128,8 @@
 /* step to anchors and change the active nav color
  ******************************/
 (function () {
+  'use strict';
+
   const header = document.querySelector('.page-header');
   const HEADER_HEIGHT = header.offsetHeight;
   const FIX_HEIGHT_ACTIVE_COLOR = 1;
@@ -135,9 +138,9 @@
   const sections = document.querySelectorAll('section');
 
   const anchorStepHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
-    const target = evt ? evt.target : window.event.srcElement;
+    const target = evt.target;
 
     if (target.classList.contains('main-nav__link') &&
       !target.parentElement.classList.contains('main-nav__item--active')) {
@@ -155,7 +158,7 @@
   mainNav.addEventListener('click', anchorStepHandler);
 
   const scrollHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
     const curPosition = window.pageYOffset + HEADER_HEIGHT;
 
@@ -178,41 +181,55 @@
   document.addEventListener('scroll', scrollHandler);
 })();
 
-/* switch slides and toggle the phone image
+/* carousel slider
  ******************************/
 (function () {
-  const UTILS = window.utils;
-  const DEBOUNCE_DELAY = 300;
+  'use strict';
+
   const slider = document.querySelector('#slider');
-  const sliderControls = document.querySelector('#slider-controls');
-  const phones = slider.querySelectorAll('.phone');
+  const sliderList = slider.querySelector('.slider__list');
+  const slides = slider.querySelectorAll('.slider__item');
+  const controlPrev = slider.querySelector('.slider__control--prev');
+  const controlNext = slider.querySelector('.slider__control--next');
+  let currentItem = 0;
+  let isEnabled = true;
 
-  let slideIndex = 0;
-  toggleSlides(slideIndex);
-
-  function plusSlides(n) {
-    return toggleSlides(slideIndex += n);
+  function changeCurrentItem(n) {
+    currentItem = (n + slides.length) % slides.length;
   }
 
-  function toggleSlides(n) {
-    const slides = slider.querySelectorAll('.slider__item');
+  function hideItem(direction) {
+    isEnabled = false;
+    slides[currentItem].classList.add(direction);
+    slides[currentItem].addEventListener('animationend', function () {
+      this.classList.remove('slider__item--active', direction);
+    });
+  }
 
-    if (n > slides.length - 1) {
-      slideIndex = 0;
-    }
+  function showItem(direction) {
+    slides[currentItem].classList.add('slider__item--next', direction);
+    slides[currentItem].addEventListener('animationend', function () {
+      this.classList.remove('slider__item--next', direction);
+      this.classList.add('slider__item--active');
+      isEnabled = true;
+    });
+    toggleBgColor(slides[currentItem]);
+  }
 
-    if (n < 0) {
-      slideIndex = slides.length - 1;
-    }
+  function nextItem(n) {
+    hideItem('to-left');
+    changeCurrentItem(n + 1);
+    showItem('from-right');
+  }
 
-    UTILS.toggleClass(slides, 'hide', true);
-    UTILS.toggleClass(slides[slideIndex], 'hide', false);
-
-    return slides[slideIndex];
+  function previousItem(n) {
+    hideItem('to-right');
+    changeCurrentItem(n - 1);
+    showItem('from-left');
   }
 
   function toggleBgColor(nodeItem) {
-    const promo = document.querySelector('#home');
+    const promo = document.querySelector('.promo');
 
     const bgColor = nodeItem.getAttribute('data-theme');
 
@@ -220,33 +237,111 @@
     promo.classList.add('promo--theme-' + bgColor);
   }
 
-  const fadeSlidesHandler = UTILS.debounce(function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
-
-    const target = evt ? evt.target : window.event.srcElement;
-
-    if (target.classList.contains('slider__control--prev') ||
-      target.closest('.slider__control--prev')) {
-      const currentSlide = plusSlides(-1);
-      toggleBgColor(currentSlide);
+  controlPrev.addEventListener('click', function () {
+    if (isEnabled) {
+      previousItem(currentItem);
     }
-
-    if (target.classList.contains('slider__control--next') ||
-      target.closest('.slider__control--next')) {
-      const currentSlide = plusSlides(1);
-      toggleBgColor(currentSlide);
-    }
-  }, DEBOUNCE_DELAY);
-
-  sliderControls.addEventListener('click', function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
-    fadeSlidesHandler(evt);
   });
 
-  const toggleImageHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+  controlNext.addEventListener('click', function () {
+    if (isEnabled) {
+      nextItem(currentItem);
+    }
+  });
 
-    const target = evt ? evt.target : window.event.srcElement;
+  const swipedetect = (el) => {
+    let surface = el;
+    let startX = 0;
+    let startY = 0;
+    let distX = 0;
+    let distY = 0;
+    let startTime = 0;
+    let elapsedTime = 0;
+
+    let threshold = 150;
+    let restraint = 100;
+    let allowedTime = 300;
+
+    const switchItem = (distX, distY) => {
+      elapsedTime = new Date().getTime() - startTime;
+      if (elapsedTime <= allowedTime){
+        if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint){
+          if ((distX > 0)) {
+            if (isEnabled) {
+              previousItem(currentItem);
+            }
+          } else {
+            if (isEnabled) {
+              nextItem(currentItem);
+            }
+          }
+        }
+      }
+    };
+
+    surface.addEventListener('mousedown', function (evt){
+      startX = evt.pageX;
+      startY = evt.pageY;
+      startTime = new Date().getTime();
+      evt.preventDefault();
+    }, false);
+
+    surface.addEventListener('mouseup', function (evt){
+      distX = evt.pageX - startX;
+      distY = evt.pageY - startY;
+
+      switchItem(distX, distY);
+      evt.preventDefault();
+    }, false);
+
+    surface.addEventListener('touchstart', function (evt){
+      if (evt.target.classList.contains('slider__control-icon') ||
+        evt.target.classList.contains('slider__control')) {
+        if (evt.target.classList.contains('slider__control--prev')) {
+          if (isEnabled) {
+            previousItem(currentItem);
+          }
+        } else {
+          if (isEnabled) {
+            nextItem(currentItem);
+          }
+        }
+      }
+      const touchobj = evt.changedTouches[0];
+      startX = touchobj.pageX;
+      startY = touchobj.pageY;
+      startTime = new Date().getTime();
+      evt.preventDefault();
+    }, false);
+
+    surface.addEventListener('touchmove', function (evt){
+      evt.preventDefault();
+    }, false);
+
+    surface.addEventListener('touchend', function (evt){
+      const touchobj = evt.changedTouches[0];
+      distX = touchobj.pageX - startX;
+      distY = touchobj.pageY - startY;
+
+      switchItem(distX, distY);
+      evt.preventDefault();
+    }, false);
+  };
+
+  swipedetect(sliderList);
+})();
+
+/* toggle phones image
+ ******************************/
+(function () {
+  'use strict';
+
+  const phones = document.querySelectorAll('.phone');
+
+  const toggleImageHandler = function (evt) {
+    evt.preventDefault();
+
+    const target = evt.target;
     const phone = target.closest('.phone');
 
     if (phone) {
@@ -263,6 +358,8 @@
 /* toggle portfolio filter tags and select an image
  ******************************/
 (function () {
+  'use strict';
+
   const UTILS = window.utils;
   const DEBOUNCE_DELAY = 300;
   const portfolioFilter = document.querySelector('#portfolio-filter');
@@ -300,9 +397,9 @@
   };
 
   const portfolioFilterHandler = UTILS.debounce(function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
-    const target = evt ? evt.target : window.event.srcElement;
+    const target = evt.target;
 
     if (target.classList.contains('filter__item')) {
       target.classList.toggle('filter__item--selected');
@@ -316,9 +413,9 @@
   }, DEBOUNCE_DELAY);
 
   const portfolioGroupHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
-    const target = evt ? evt.target : window.event.srcElement;
+    const target = evt.target;
 
     if (target.classList.contains('portfolio__image')) {
       UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
@@ -334,7 +431,7 @@
   };
 
   portfolioFilter.addEventListener('click', function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
     portfolioFilterHandler(evt);
   });
   portfolioGroup.addEventListener('click', portfolioGroupHandler);
@@ -343,6 +440,8 @@
 /* easy validation form and showing modal window
  ******************************/
 (function () {
+  'use strict';
+
   const UTILS = window.utils;
   const form = document.querySelector('#contact-form');
   const formInputsRequired = form.querySelectorAll('.form__input:required');
@@ -382,9 +481,9 @@
   };
 
   const requiredInputHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
-    const target = evt ? evt.target : window.event.srcElement;
+    const target = evt.target;
 
     UTILS.removeCssClass(target, 'form__input--invalid');
   };
@@ -408,15 +507,15 @@
   };
 
   const formSubmitHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
     openModal();
   };
 
   const closeModalHandler = function (evt) {
-    evt.preventDefault ? evt.preventDefault() : (window.event.returnValue = false);
+    evt.preventDefault();
 
-    const target = evt ? evt.target : window.event.srcElement;
+    const target = evt.target;
 
     if (target === modalOverlay ||
       target === modalClose ||
