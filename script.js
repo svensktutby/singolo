@@ -311,11 +311,11 @@
       startX = touchobj.pageX;
       startY = touchobj.pageY;
       startTime = new Date().getTime();
-      evt.preventDefault();
+      // evt.preventDefault(); // for touching inner screen (!needs to remove comment)
     }, false);
 
     surface.addEventListener('touchmove', function (evt){
-      evt.preventDefault();
+      // evt.preventDefault(); // for moving page (!needs to remove comment)
     }, false);
 
     surface.addEventListener('touchend', function (evt){
@@ -324,7 +324,7 @@
       distY = touchobj.pageY - startY;
 
       switchItem(distX, distY);
-      evt.preventDefault();
+      // evt.preventDefault(); // for touching inner screen (!needs to remove comment)
     }, false);
   };
 
