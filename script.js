@@ -216,13 +216,13 @@
     toggleBgColor(slides[currentItem]);
   }
 
-  function nextItem(n) {
+  function previousItem(n) {
     hideItem('to-left');
     changeCurrentItem(n + 1);
     showItem('from-right');
   }
 
-  function previousItem(n) {
+  function nextItem(n) {
     hideItem('to-right');
     changeCurrentItem(n - 1);
     showItem('from-left');
@@ -268,11 +268,11 @@
         if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint){
           if ((distX > 0)) {
             if (isEnabled) {
-              previousItem(currentItem);
+              nextItem(currentItem);
             }
           } else {
             if (isEnabled) {
-              nextItem(currentItem);
+              previousItem(currentItem);
             }
           }
         }
@@ -299,11 +299,11 @@
         evt.target.classList.contains('slider__control')) {
         if (evt.target.classList.contains('slider__control--prev')) {
           if (isEnabled) {
-            previousItem(currentItem);
+            nextItem(currentItem);
           }
         } else {
           if (isEnabled) {
-            nextItem(currentItem);
+            previousItem(currentItem);
           }
         }
       }
@@ -315,7 +315,7 @@
     }, false);
 
     surface.addEventListener('touchmove', function (evt){
-      // evt.preventDefault(); // for moving page (!needs to remove comment)
+      evt.preventDefault();
     }, false);
 
     surface.addEventListener('touchend', function (evt){
