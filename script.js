@@ -112,6 +112,18 @@
     };
   };
 
+  /**
+   * Returns a DOM node
+   * @param {string} element tag type
+   * @param {string} classes css classes
+   * @return {Object}
+   */
+  function createDomNode(element, ...classes){
+    const node = document.createElement(element);
+    node.classList.add(...classes);
+    return node;
+  }
+
   window.utils = {
     ENTER: KeyCode.ENTER,
     ESCAPE: KeyCode.ESCAPE,
@@ -121,7 +133,8 @@
     removeCssClass: removeCssClass,
     toggleClass: toggleClass,
     keyPressHandler: keyPressHandler,
-    debounce: debounce
+    debounce: debounce,
+    createDomNode: createDomNode
   };
 })();
 
@@ -130,7 +143,7 @@
 (function () {
   'use strict';
 
-  const header = document.querySelector('.page-header');
+  const header = document.querySelector('#header');
   const HEADER_HEIGHT = header.offsetHeight;
   const FIX_HEIGHT_ACTIVE_COLOR = 1;
   const mainNav = document.querySelector('#main-nav');
@@ -437,46 +450,55 @@
   portfolioGroup.addEventListener('click', portfolioGroupHandler);
 })();
 
-/* easy validation form and showing modal window
- ******************************/
 (function () {
   'use strict';
 
   const UTILS = window.utils;
+  const body = document.body;
   const form = document.querySelector('#contact-form');
   const formInputsRequired = form.querySelectorAll('.form__input:required');
   const formSubject = form.querySelector('#subject');
   const formMessage = form.querySelector('#message');
   const formSubmit = form.querySelector('#submit');
-  const modalOverlay = document.querySelector('#modal-overlay');
-  const modal = modalOverlay.querySelector('.modal');
-  const modalSubject = modalOverlay.querySelector('#info-subject');
-  const modalDescription = modalOverlay.querySelector('#info-desc');
-  const modalClose = modalOverlay.querySelector('#modal-close');
 
   const openModal = function () {
-    modalOverlay.classList.remove('hide');
-    modalOverlay.classList.add('fadein');
-    modal.classList.add('bounce');
-    modalSubject.textContent = formSubject.value  || 'Without subject';
-    modalDescription.textContent = formMessage.value || 'Without description';
+    const subjectValue = formSubject.value  || 'Without subject';
+    const messageValue = formMessage.value || 'Without description';
+
+    const overlay = UTILS.createDomNode('div', 'overlay', 'overlay--modal', 'fadein');
+    overlay.id = 'overlay-modal';
+
+    const modal = UTILS.createDomNode('div', 'modal', 'bounce');
+    modal.innerHTML = `<div class="modal__content">
+        <div class="modal__heading title-secondary">The letter was sent</div>
+          <dl class="modal__info text-secondary">
+            <dt class="modal__info-title">Subject:</dt>
+            <dd class="modal__info-text" id="info-subject">${subjectValue}</dd>
+            <dt class="modal__info-title">Description:</dt>
+            <dd class="modal__info-text" id="info-desc">${messageValue}</dd>
+          </dl>
+        <button class="modal__close" id="modal-close" type="button">OK</button>
+      </div>`;
+
+    overlay.append(modal);
+    body.insertAdjacentElement('beforeend', overlay);
+    body.classList.add('hidden');
     formSubmit.blur();
     form.reset();
 
-    modalOverlay.addEventListener('click', closeModalHandler);
+    overlay.addEventListener('click', closeModalHandler);
     window.addEventListener('keydown', closeModalHandler);
   };
 
   const closeModal = function () {
-    modalOverlay.classList.remove('fadein');
-    modalOverlay.classList.add('fadeout');
-    modal.classList.remove('bounce');
+    const overlay = document.querySelector('#overlay-modal');
+    overlay.classList.remove('fadein');
+    overlay.classList.add('fadeout');
+    body.classList.remove('hidden');
     setTimeout(function () {
-      modalOverlay.classList.remove('fadeout');
-      modalOverlay.classList.add('hide');
+      overlay.remove();
     }, 450);
 
-    modalOverlay.removeEventListener('click', closeModalHandler);
     window.removeEventListener('keydown', closeModalHandler);
   };
 
@@ -517,8 +539,8 @@
 
     const target = evt.target;
 
-    if (target === modalOverlay ||
-      target === modalClose ||
+    if (target.classList.contains('overlay--modal') ||
+      target.classList.contains('modal__close')||
       evt.key === UTILS.ESCAPE.key ||
       evt.keyCode === UTILS.ESCAPE.keyCode) {
       closeModal();

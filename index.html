@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+  <noscript>You have javascript disabled. Site interactivity will be unavailable.</noscript>
   <div style="display: none">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <symbol id="arrow-left" viewBox="0 0 16 27">
@@ -117,7 +118,7 @@
   </div>
   <div class="page__inner">
     <div class="page__content">
-      <header class="page-header page__header">
+      <header class="page-header page__header" id="header">
         <div class="container">
           <div class="page-header__inner">
             
@@ -631,21 +632,6 @@
           </ul>
         </div>
       </footer>
-    </div>
-  </div>
-
-  <div class="modal-overlay hide" id="modal-overlay">
-    <div class="modal">
-      <div class="modal__content">
-        <div class="modal__heading title-secondary">The letter was sent</div>
-          <dl class="modal__info text-secondary">
-            <dt class="modal__info-title">Subject:</dt>
-            <dd class="modal__info-text" id="info-subject"></dd>
-            <dt class="modal__info-title">Description:</dt>
-            <dd class="modal__info-text" id="info-desc"></dd>
-          </dl>
-        <button class="modal__close" id="modal-close" type="button">OK</button>
-      </div>
     </div>
   </div>
 
