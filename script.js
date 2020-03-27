@@ -124,6 +124,29 @@
     return node;
   }
 
+  /**
+   * Create overlay
+   * @param {Object} settings
+   */
+  function createOverlay({
+                           nodeAppend,
+                           id,
+                           eventType,
+                           handler,
+                           classes
+                         }) {
+    const body = document.body;
+    const overlay = createDomNode('div', ...classes);
+    overlay.id = id;
+
+    if (nodeAppend) {
+      overlay.append(nodeAppend);
+    }
+    body.insertAdjacentElement('beforeend', overlay);
+
+    overlay.addEventListener(eventType, handler);
+  }
+
   window.utils = {
     ENTER: KeyCode.ENTER,
     ESCAPE: KeyCode.ESCAPE,
@@ -134,7 +157,79 @@
     toggleClass: toggleClass,
     keyPressHandler: keyPressHandler,
     debounce: debounce,
-    createDomNode: createDomNode
+    createDomNode: createDomNode,
+    createOverlay: createOverlay
+  };
+})();
+
+/* burger
+ ******************************/
+(function () {
+  'use strict';
+
+  const UTILS = window.utils;
+  const body = document.body;
+  const header = document.querySelector('#header');
+  const headerInner = header.querySelector('.page-header__inner');
+  const mainNav = document.querySelector('#main-nav');
+  const headerLogo = document.querySelector('.page-header__logo');
+
+  const burger = UTILS.createDomNode('button', 'burger');
+  const burgerSpan = UTILS.createDomNode('span');
+  burger.id = 'burger';
+  burger.append(burgerSpan);
+  headerInner.append(burger);
+
+  const showMobileMenu = function () {
+    UTILS.createOverlay({
+      nodeAppend: false,
+      id: 'overlay-mobil',
+      eventType: 'click',
+      handler: hideMobileMenu,
+      classes: ['overlay', 'overlay--mobil', 'fadein']
+    });
+
+    mainNav.classList.add('page-header__nav--show');
+    headerLogo.classList.add('page-header__logo--open-menu');
+    body.classList.add('lock');
+  };
+
+  const hideMobileMenu = function () {
+    const overlay = document.querySelector('#overlay-mobil');
+    const burger = document.querySelector('#burger');
+
+    if (overlay && burger) {
+      overlay.classList.remove('fadein');
+      overlay.classList.add('fadeout');
+      mainNav.classList.remove('page-header__nav--show');
+      burger.classList.remove('burger--close');
+      headerLogo.classList.remove('page-header__logo--open-menu');
+      body.classList.remove('lock');
+
+      overlay.addEventListener('animationend', function () {
+        this.remove();
+      });
+    }
+  };
+
+  const toggleMobileHandler = function (evt) {
+    evt.preventDefault();
+
+    const that = this;
+
+    if (!that.classList.contains('burger--close')) {
+      showMobileMenu();
+      that.classList.add('burger--close');
+    } else {
+      hideMobileMenu();
+    }
+      that.blur();
+  };
+
+  burger.addEventListener('click', toggleMobileHandler);
+
+  window.burger = {
+    hideMobileMenu: hideMobileMenu
   };
 })();
 
@@ -164,6 +259,7 @@
         top: topOfElement,
         behavior: 'smooth'
       });
+      window.burger.hideMobileMenu();
       target.blur();
     }
   };
@@ -377,24 +473,9 @@
   const DEBOUNCE_DELAY = 300;
   const portfolioFilter = document.querySelector('#portfolio-filter');
   const portfolioGroup = document.querySelector('#portfolio-group');
+  const portfolioFilters = portfolioFilter.querySelectorAll('.filter__item');
   const portfolioItems = portfolioGroup.querySelectorAll('.portfolio__item');
   const portfolioImages = portfolioGroup.querySelectorAll('.portfolio__image');
-
-  const getShuffledPortfolioItems = function () {
-    const portfolioItemsArray = Array.from(portfolioItems);
-    let shuffledPortfolioItems = [];
-
-    if (!portfolioFilter.querySelector('.filter__item--selected')) {
-      return shuffledPortfolioItems;
-    }
-    if (portfolioFilter.querySelector('#all').classList.contains('filter__item--selected')) {
-      shuffledPortfolioItems = UTILS.shuffleArray(portfolioItemsArray, false);
-    } else {
-      shuffledPortfolioItems = UTILS.shuffleArray(portfolioItemsArray, true);
-    }
-
-    return shuffledPortfolioItems;
-  };
 
   const insertFragment = function (where, nodeList) {
     if (!nodeList.length) {
@@ -414,14 +495,16 @@
 
     const target = evt.target;
 
-    if (target.classList.contains('filter__item')) {
-      target.classList.toggle('filter__item--selected');
-      target.blur();
+    if (target.classList.contains('filter__item') &&
+      !target.classList.contains('filter__item--selected')) {
+      UTILS.toggleClass(portfolioFilters, 'filter__item--selected', false);
+      target.classList.add('filter__item--selected');
       UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
+      const shuffledPortfolioItems = UTILS.shuffleArray([...portfolioItems], false);
 
       portfolioGroup.innerHTML = '';
 
-      insertFragment(portfolioGroup, getShuffledPortfolioItems());
+      insertFragment(portfolioGroup, shuffledPortfolioItems);
     }
   }, DEBOUNCE_DELAY);
 
@@ -430,16 +513,23 @@
 
     const target = evt.target;
 
+    const toggleActiveImage = function (item, blurItem) {
+      if (!item.classList.contains('portfolio__image--selected')) {
+        UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
+        item.classList.add('portfolio__image--selected');
+      } else if (item.classList.contains('portfolio__image--selected')) {
+        item.classList.remove('portfolio__image--selected');
+      }
+      blurItem.blur();
+    };
+
     if (target.classList.contains('portfolio__image')) {
-      UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
-      target.classList.add('portfolio__image--selected');
-      target.parentElement.blur();
+      toggleActiveImage(target, target.parentElement);
     }
 
     if (target.classList.contains('portfolio__item')) {
-      UTILS.toggleClass(portfolioImages, 'portfolio__image--selected', false);
-      target.querySelector('.portfolio__image').classList.add('portfolio__image--selected');
-      target.blur();
+      const portfolioImage = target.querySelector('.portfolio__image');
+      toggleActiveImage(portfolioImage, target);
     }
   };
 
@@ -465,9 +555,6 @@
     const subjectValue = formSubject.value  || 'Without subject';
     const messageValue = formMessage.value || 'Without description';
 
-    const overlay = UTILS.createDomNode('div', 'overlay', 'overlay--modal', 'fadein');
-    overlay.id = 'overlay-modal';
-
     const modal = UTILS.createDomNode('div', 'modal', 'bounce');
     modal.innerHTML = `<div class="modal__content">
         <div class="modal__heading title-secondary">The letter was sent</div>
@@ -480,13 +567,18 @@
         <button class="modal__close" id="modal-close" type="button">OK</button>
       </div>`;
 
-    overlay.append(modal);
-    body.insertAdjacentElement('beforeend', overlay);
-    body.classList.add('hidden');
+    UTILS.createOverlay({
+      nodeAppend: modal,
+      id: 'overlay-modal',
+      eventType: 'click',
+      handler: closeModalHandler,
+      classes: ['overlay', 'overlay--modal', 'fadein']
+    });
+    body.classList.add('lock');
+
     formSubmit.blur();
     form.reset();
 
-    overlay.addEventListener('click', closeModalHandler);
     window.addEventListener('keydown', closeModalHandler);
   };
 
@@ -494,10 +586,11 @@
     const overlay = document.querySelector('#overlay-modal');
     overlay.classList.remove('fadein');
     overlay.classList.add('fadeout');
-    body.classList.remove('hidden');
-    setTimeout(function () {
-      overlay.remove();
-    }, 450);
+    body.classList.remove('lock');
+
+    overlay.addEventListener('animationend', function () {
+      this.remove();
+    });
 
     window.removeEventListener('keydown', closeModalHandler);
   };
